@@ -1,6 +1,6 @@
 backend:
-  name: github
-  repo: thailien/sachhaymoingay
+  name: git-gateway
+
   branch: main
 
 media_folder: "public/assets/uploads"
