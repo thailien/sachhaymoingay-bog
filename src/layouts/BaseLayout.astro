@@ -1,13 +1,41 @@
-<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+---
+import "../styles/global.css";
 
-<script>
-  if (window.netlifyIdentity) {
-    window.netlifyIdentity.on("init", user => {
-      if (!user) {
-        window.netlifyIdentity.on("login", () => {
-          document.location.href = "/admin/";
+const {
+  title = "Sách Hay Mỗi Ngày | Tuyển chọn sách đáng đọc",
+  description = "Tuyển chọn sách văn học, kinh doanh, phát triển bản thân, khoa học và thiếu nhi.",
+  image = "/assets/hero-books.png",
+  type = "website",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={image} />
+  </head>
+
+  <body>
+    <slot />
+
+    <script is:inline src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <script is:inline>
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.on("init", user => {
+          if (!user) {
+            window.netlifyIdentity.on("login", () => {
+              document.location.href = "/admin/";
+            });
+          }
         });
       }
-    });
-  }
-</script>
+    </script>
+  </body>
+</html>
