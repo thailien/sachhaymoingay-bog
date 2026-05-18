@@ -1,0 +1,23 @@
+backend:
+  name: github
+  repo: thailien/sachhaymoingay
+  branch: main
+
+media_folder: "public/assets/uploads"
+public_folder: "/assets/uploads"
+
+collections:
+  - name: "posts"
+    label: "Bài viết"
+    folder: "content/posts"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+    preview_path: "blog/{{slug}}"
+    fields:
+      - { label: "Tiêu đề", name: "title", widget: "string" }
+      - { label: "Ngày đăng", name: "date", widget: "datetime" }
+      - { label: "Ảnh bìa", name: "cover", widget: "image", required: false }
+      - { label: "Mô tả SEO", name: "description", widget: "text" }
+      - { label: "Nội dung", name: "body", widget: "markdown" }

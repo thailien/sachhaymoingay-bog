@@ -1,0 +1,46 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { formatPostDate, getAllPosts } from "../../lib/posts";
+
+export function getStaticPaths() {
+  return getAllPosts().map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const Content = post.Content;
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: post.title,
+  description: post.description,
+  datePublished: post.date.toISOString(),
+  image: post.cover ? new URL(post.cover, Astro.site ?? Astro.url).toString() : undefined,
+  author: {
+    "@type": "Organization",
+    name: "Sách Hay Mỗi Ngày",
+  },
+};
+---
+
+<BaseLayout title={`${post.title} | Sách Hay Mỗi Ngày`} description={post.description} image={post.cover} type="article">
+  <main>
+    <article class="article-shell">
+      <header class="article-header">
+        <a class="breadcrumb" href="/blog/">Blog</a>
+        <p class="post-date">{formatPostDate(post.date)}</p>
+        <h1>{post.title}</h1>
+        <p>{post.description}</p>
+      </header>
+
+      {post.cover && <img class="article-cover" src={post.cover} alt="" />}
+
+      <div class="article-content">
+        <Content />
+      </div>
+    </article>
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </main>
+</BaseLayout>

@@ -1,0 +1,118 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { formatPostDate, getAllPosts } from "../lib/posts";
+
+const latestPosts = getAllPosts().slice(0, 3);
+---
+
+<BaseLayout>
+  <main>
+    <section class="hero">
+      <img class="hero-image" src="/assets/hero-books.png" alt="Bàn đọc sách tinh tế với nhiều thể loại sách" />
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <p class="eyebrow">Tủ sách chọn lọc cho người ham học</p>
+        <h1>Đọc đúng cuốn sách, mở đúng cánh cửa.</h1>
+        <p class="hero-copy">
+          Khám phá các đầu sách đáng tin cậy theo nhu cầu: phát triển bản thân, kinh doanh, văn học, khoa học,
+          lịch sử và sách thiếu nhi. Mỗi gợi ý đều hướng tới giá trị đọc thật, không chạy theo trào lưu rỗng.
+        </p>
+        <div class="hero-actions">
+          <a class="button primary" href="#bai-viet-moi">Đọc bài mới nhất</a>
+          <a class="button secondary" href="#mua-sach">Đến sàn mua sách</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="intro-band" aria-label="Triết lý chọn sách">
+      <div>
+        <span class="small-label">Tiêu chí</span>
+        <strong>Đáng đọc</strong>
+        <p>Nội dung có chiều sâu, tác giả có chuyên môn hoặc tác phẩm đã được kiểm chứng qua thời gian.</p>
+      </div>
+      <div>
+        <span class="small-label">Trải nghiệm</span>
+        <strong>Dễ chọn</strong>
+        <p>Phân loại theo mục tiêu đọc, giúp bạn tìm sách nhanh hơn trước khi quyết định mua.</p>
+      </div>
+      <div>
+        <span class="small-label">Liên kết</span>
+        <strong>Tiện mua</strong>
+        <p>Các nút mua được thiết kế để thay bằng link tiếp thị liên kết tới sàn thương mại điện tử.</p>
+      </div>
+    </section>
+
+    <section class="section" id="bai-viet-moi">
+      <div class="section-heading split-heading">
+        <div>
+          <p class="eyebrow">Bài viết mới nhất</p>
+          <h2>Những ghi chú đọc sách vừa xuất bản</h2>
+        </div>
+        <p>
+          Bài viết được tạo từ Decap CMS dưới dạng markdown trong <code>content/posts</code> và tự động build thành
+          HTML tĩnh khi deploy lên Netlify.
+        </p>
+      </div>
+
+      <div class="post-grid">
+        {
+          latestPosts.map((post) => (
+            <article class="post-card">
+              {post.cover && <img src={post.cover} alt="" loading="lazy" />}
+              <div class="post-card-body">
+                <p class="post-date">{formatPostDate(post.date)}</p>
+                <h3><a href={`/blog/${post.slug}/`}>{post.title}</a></h3>
+                <p>{post.description}</p>
+                <a class="text-link" href={`/blog/${post.slug}/`}>Đọc bài viết</a>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+
+      <div class="section-action">
+        <a class="button dark" href="/blog/">Xem toàn bộ blog</a>
+      </div>
+    </section>
+
+    <section class="section" id="danh-muc">
+      <div class="section-heading">
+        <p class="eyebrow">Danh mục đọc</p>
+        <h2>Mỗi thể loại là một cách nhìn thế giới</h2>
+      </div>
+      <div class="category-grid">
+        <article class="category-card"><span>01</span><h3>Văn học</h3><p>Nuôi dưỡng cảm xúc, ngôn ngữ và khả năng thấu hiểu con người.</p></article>
+        <article class="category-card"><span>02</span><h3>Kinh doanh</h3><p>Tư duy chiến lược, quản trị, marketing, tài chính cá nhân và khởi nghiệp.</p></article>
+        <article class="category-card"><span>03</span><h3>Phát triển bản thân</h3><p>Xây thói quen, quản lý thời gian, tư duy kỷ luật và sức bền tinh thần.</p></article>
+        <article class="category-card"><span>04</span><h3>Khoa học</h3><p>Giải thích tự nhiên, công nghệ, não bộ và những câu hỏi lớn bằng ngôn ngữ dễ tiếp cận.</p></article>
+        <article class="category-card"><span>05</span><h3>Lịch sử</h3><p>Hiểu bối cảnh, con người, văn minh và các bước ngoặt tạo nên hiện tại.</p></article>
+        <article class="category-card"><span>06</span><h3>Thiếu nhi</h3><p>Khơi gợi trí tưởng tượng, lòng tử tế và thói quen đọc từ sớm.</p></article>
+      </div>
+    </section>
+
+    <section class="quote-feature" id="quotes">
+      <div>
+        <p class="eyebrow">Quote truyền động lực</p>
+        <blockquote>“Một cuốn sách hay không chỉ cho ta kiến thức, mà còn cho ta một phiên bản sáng suốt hơn của chính mình.”</blockquote>
+        <p>Sách Hay Mỗi Ngày</p>
+      </div>
+    </section>
+
+    <section class="marketplace-band" id="mua-sach">
+      <div>
+        <p class="eyebrow">Tiếp thị liên kết</p>
+        <h2>Dẫn người đọc tới nơi mua quen thuộc</h2>
+        <p>
+          Gắn affiliate link vào từng bài review hoặc từng thẻ sách. Bạn có thể ưu tiên sàn có hoa hồng tốt,
+          giá cạnh tranh và chính sách giao hàng ổn định.
+        </p>
+      </div>
+      <div class="marketplace-links" aria-label="Liên kết sàn thương mại điện tử">
+        <a href="https://shopee.vn/search?keyword=sach" target="_blank" rel="noopener">Shopee</a>
+        <a href="https://www.lazada.vn/catalog/?q=sach" target="_blank" rel="noopener">Lazada</a>
+        <a href="https://tiki.vn/search?q=sach" target="_blank" rel="noopener">Tiki</a>
+        <a href="https://www.amazon.com/s?k=books" target="_blank" rel="noopener">Amazon</a>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
