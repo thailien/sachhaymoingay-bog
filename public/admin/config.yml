@@ -30,6 +30,7 @@ collections:
     format: "frontmatter"
     fields:
       - { label: "Quote", name: "quote", widget: "text" }
+      - { label: "Tiêu đề SEO", name: "title", widget: "string", required: false }
       - { label: "Tác giả", name: "author", widget: "string", required: false }
       - { label: "Ngày đăng", name: "date", widget: "datetime" }
       - { label: "Ảnh quote", name: "image", widget: "image", required: false }
