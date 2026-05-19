@@ -6,7 +6,6 @@ const quoteFiles = await Astro.glob("../../content/quotes/*.md");
 const quotes = quoteFiles
   .map((item) => ({
     ...item.frontmatter,
-    body: item.compiledContent(),
   }))
   .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 ---
@@ -14,15 +13,24 @@ const quotes = quoteFiles
 <BaseLayout title="Quote mỗi ngày | Sách Hay Mỗi Ngày">
   <main class="section">
     <div class="container">
-      <p class="eyebrow">Quote mỗi ngày</p>
-      <h1>Những câu trích dẫn đáng suy ngẫm</h1>
+      <p>Quote mỗi ngày</p>
 
-      <div class="quote-grid">
+      <h1>Những câu chữ đáng để suy ngẫm chậm hơn một chút.</h1>
+
+      <div>
         {quotes.map((quote) => (
-          <article class="quote-card">
-            <blockquote>“{quote.quote}”</blockquote>
-            {quote.author && <p class="quote-author">— {quote.author}</p>}
-            {quote.body && <div set:html={quote.body} />}
+          <article style="margin-bottom: 48px;">
+            <blockquote
+              style="font-size: 2rem; line-height: 1.5; font-weight: 600;"
+            >
+              “{quote.quote}”
+            </blockquote>
+
+            {quote.author && (
+              <p style="opacity: 0.7; margin-top: 12px;">
+                — {quote.author}
+              </p>
+            )}
           </article>
         ))}
       </div>
