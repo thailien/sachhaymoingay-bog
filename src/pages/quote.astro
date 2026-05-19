@@ -1,0 +1,31 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const quoteFiles = await Astro.glob("../../content/quotes/*.md");
+
+const quotes = quoteFiles
+  .map((item) => ({
+    ...item.frontmatter,
+    body: item.compiledContent(),
+  }))
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+---
+
+<BaseLayout title="Quote mỗi ngày | Sách Hay Mỗi Ngày">
+  <main class="section">
+    <div class="container">
+      <p class="eyebrow">Quote mỗi ngày</p>
+      <h1>Những câu trích dẫn đáng suy ngẫm</h1>
+
+      <div class="quote-grid">
+        {quotes.map((quote) => (
+          <article class="quote-card">
+            <blockquote>“{quote.quote}”</blockquote>
+            {quote.author && <p class="quote-author">— {quote.author}</p>}
+            {quote.body && <div set:html={quote.body} />}
+          </article>
+        ))}
+      </div>
+    </div>
+  </main>
+</BaseLayout>
