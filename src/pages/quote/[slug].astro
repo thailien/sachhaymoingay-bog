@@ -45,7 +45,6 @@ const pageTitle = quote.title || quote.quote || "Quote hay mỗi ngày";
 const pageDescription =
   quote.description || quote.quote || "Những câu chữ đáng suy ngẫm từ Sách Hay Mỗi Ngày.";
 ---
----
 
 <BaseLayout
   title={`${pageTitle} | Sách Hay Mỗi Ngày`}
@@ -63,9 +62,7 @@ const pageDescription =
 
       <div class="single-quote-content">
         <p class="eyebrow">QUOTE MỖI NGÀY</p>
-
         <h1>“{quote.quote}”</h1>
-
         {quote.author && <p class="author">— {quote.author}</p>}
 
         <div class="actions">
