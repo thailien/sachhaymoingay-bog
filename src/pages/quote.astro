@@ -43,6 +43,29 @@ const quotes = quoteFiles
       ))}
     </section>
   </main>
+
+<script>
+  document.querySelectorAll(".share-btn").forEach((button) => {
+    button.addEventListener("click", async () => {
+      const quote = button.dataset.quote;
+      const author = button.dataset.author || "Sách Hay Mỗi Ngày";
+
+      const text = `“${quote}”\n— ${author}\n\nXem thêm tại: https://sachhaymoingay.com/quote/`;
+
+      if (navigator.share) {
+        await navigator.share({
+          title: "Quote hay từ Sách Hay Mỗi Ngày",
+          text,
+          url: "https://sachhaymoingay.com/quote/",
+        });
+      } else {
+        await navigator.clipboard.writeText(text);
+        alert("Đã copy quote. Bạn có thể dán để chia sẻ.");
+      }
+    });
+  });
+</script>
+
 </BaseLayout>
 
 <style>
