@@ -31,14 +31,13 @@ const quotes = quoteFiles
           <div class="quote-actions">
             <p class="quote-author">— {quote.author}</p>
 
-            <a
-              class="share-btn"
-              href={`https://www.facebook.com/sharer/sharer.php?u=https://sachhaymoingay.com/quote/`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Chia sẻ Facebook
-            </a>
+            <button
+  class="share-btn"
+  data-quote={quote.quote}
+  data-author={quote.author}
+>
+  Chia sẻ quote
+</button>
           </div>
         </article>
       ))}
