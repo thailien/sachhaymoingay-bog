@@ -39,45 +39,20 @@ const quotes = quoteFiles
           </a>
         )}
 
-        <button
-          class="share-btn"
-          data-quote={quote.quote}
-          data-author={quote.author}
-          data-affiliate={quote.affiliate}
-          data-image={quote.image}
-        >
-          Chia sẻ quote
-        </button>
+        <a
+  class="share-btn"
+  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://sachhaymoingay.com/quote/${quote.slug}/`)}`}
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  Chia sẻ Facebook
+</a>
       </div>
     </article>
   ))}
 </section>
 
   </main>
-
-<script>
-  document.querySelectorAll(".share-btn").forEach((button) => {
-    button.addEventListener("click", async () => {
-      const quote = button.dataset.quote;
-      const author = button.dataset.author || "Sách Hay Mỗi Ngày";
-      const affiliate = button.dataset.affiliate || "https://sachhaymoingay.com/quote/";
-      const image = button.dataset.image;
-
-      const text = `“${quote}”\n— ${author}\n\n${affiliate}`;
-
-      if (navigator.share) {
-        await navigator.share({
-          title: "Quote hay",
-          text,
-          url: affiliate,
-        });
-      } else {
-        await navigator.clipboard.writeText(image ? `${text}\nẢnh: ${image}` : text);
-        alert("Đã copy quote + link. Bạn có thể dán để chia sẻ.");
-      }
-    });
-  });
-</script>
 
 </BaseLayout>
 
