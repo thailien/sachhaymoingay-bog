@@ -1,11 +1,27 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
+const siteUrl = "https://sachhaymoingay.com";
+
+function slugify(text = "") {
+  return text
+    .toString()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "d")
+    .replace(/Đ/g, "D")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
 export async function getStaticPaths() {
   const quoteFiles = await Astro.glob("/content/quotes/*.md");
 
   return quoteFiles.map((item) => {
-    const slug = item.file.split("/").pop()?.replace(".md", "") || "";
+    const fileSlug = item.file.split("/").pop()?.replace(".md", "") || "";
+    const slug = slugify(item.frontmatter.slug || item.frontmatter.title || item.frontmatter.quote || fileSlug);
 
     return {
       params: { slug },
@@ -19,16 +35,13 @@ export async function getStaticPaths() {
 
 const { quote, slug } = Astro.props;
 
-const siteUrl = "https://sachhaymoingay.com";
 const pageUrl = `${siteUrl}/quote/${slug}/`;
-
 const imageUrl = quote.image
   ? new URL(quote.image, siteUrl).toString()
   : `${siteUrl}/assets/hero-books.png`;
 
 const pageTitle = quote.title || quote.quote || "Quote hay mỗi ngày";
-const pageDescription =
-  quote.description || quote.quote || "Những câu chữ đáng suy ngẫm từ Sách Hay Mỗi Ngày.";
+const pageDescription = quote.quote || "Những câu chữ đáng suy ngẫm từ Sách Hay Mỗi Ngày.";
 ---
 
 <BaseLayout
@@ -40,12 +53,7 @@ const pageDescription =
   <main class="single-quote-page">
     <article class="single-quote-card">
       {quote.image && (
-        <a
-          href={quote.affiliate || pageUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Xem sách hoặc sản phẩm liên quan"
-        >
+        <a href={quote.affiliate || pageUrl} target="_blank" rel="noopener noreferrer">
           <img src={quote.image} alt={quote.quote || pageTitle} class="single-quote-img" />
         </a>
       )}
@@ -57,16 +65,9 @@ const pageDescription =
 
         {quote.author && <p class="author">— {quote.author}</p>}
 
-        {quote.body && <div class="note" set:html={quote.compiledContent?.()} />}
-
         <div class="actions">
           {quote.affiliate && (
-            <a
-              class="buy-btn"
-              href={quote.affiliate}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a class="buy-btn" href={quote.affiliate} target="_blank" rel="noopener noreferrer">
               Xem sách / sản phẩm
             </a>
           )}
@@ -113,27 +114,17 @@ const pageDescription =
     font-weight: 800;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    margin: 0 0 18px;
   }
 
-  .single-quote-card h1 {
+  h1 {
     font-family: Georgia, serif;
     font-size: clamp(36px, 6vw, 76px);
     line-height: 1.08;
-    margin: 0 0 18px;
   }
 
   .author {
     opacity: 0.7;
     font-size: 20px;
-    margin: 0 0 24px;
-  }
-
-  .note {
-    font-size: 18px;
-    line-height: 1.7;
-    opacity: 0.8;
-    margin-top: 20px;
   }
 
   .actions {
@@ -158,10 +149,5 @@ const pageDescription =
   .share-btn {
     border: 1px solid #153f34;
     color: #153f34;
-  }
-
-  .buy-btn:hover,
-  .share-btn:hover {
-    opacity: 0.86;
   }
 </style>
