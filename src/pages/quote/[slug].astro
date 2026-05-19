@@ -1,1 +1,167 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
 
+export async function getStaticPaths() {
+  const quoteFiles = await Astro.glob("/content/quotes/*.md");
+
+  return quoteFiles.map((item) => {
+    const slug = item.file.split("/").pop()?.replace(".md", "") || "";
+
+    return {
+      params: { slug },
+      props: {
+        quote: item.frontmatter,
+        slug,
+      },
+    };
+  });
+}
+
+const { quote, slug } = Astro.props;
+
+const siteUrl = "https://sachhaymoingay.com";
+const pageUrl = `${siteUrl}/quote/${slug}/`;
+
+const imageUrl = quote.image
+  ? new URL(quote.image, siteUrl).toString()
+  : `${siteUrl}/assets/hero-books.png`;
+
+const pageTitle = quote.title || quote.quote || "Quote hay mỗi ngày";
+const pageDescription =
+  quote.description || quote.quote || "Những câu chữ đáng suy ngẫm từ Sách Hay Mỗi Ngày.";
+---
+
+<BaseLayout
+  title={`${pageTitle} | Sách Hay Mỗi Ngày`}
+  description={pageDescription}
+  image={imageUrl}
+  type="article"
+>
+  <main class="single-quote-page">
+    <article class="single-quote-card">
+      {quote.image && (
+        <a
+          href={quote.affiliate || pageUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Xem sách hoặc sản phẩm liên quan"
+        >
+          <img src={quote.image} alt={quote.quote || pageTitle} class="single-quote-img" />
+        </a>
+      )}
+
+      <div class="single-quote-content">
+        <p class="eyebrow">QUOTE MỖI NGÀY</p>
+
+        <h1>“{quote.quote}”</h1>
+
+        {quote.author && <p class="author">— {quote.author}</p>}
+
+        {quote.body && <div class="note" set:html={quote.compiledContent?.()} />}
+
+        <div class="actions">
+          {quote.affiliate && (
+            <a
+              class="buy-btn"
+              href={quote.affiliate}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Xem sách / sản phẩm
+            </a>
+          )}
+
+          <a
+            class="share-btn"
+            href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Chia sẻ Facebook
+          </a>
+        </div>
+      </div>
+    </article>
+  </main>
+</BaseLayout>
+
+<style>
+  .single-quote-page {
+    background: #f4eadb;
+    padding: 120px 6vw 80px;
+    color: #12241f;
+  }
+
+  .single-quote-card {
+    max-width: 960px;
+    margin: 0 auto;
+    background: #fffaf1;
+    border: 1px solid rgba(18, 36, 31, 0.12);
+  }
+
+  .single-quote-img {
+    width: 100%;
+    display: block;
+  }
+
+  .single-quote-content {
+    padding: 32px;
+  }
+
+  .eyebrow {
+    color: #b87a2c;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin: 0 0 18px;
+  }
+
+  .single-quote-card h1 {
+    font-family: Georgia, serif;
+    font-size: clamp(36px, 6vw, 76px);
+    line-height: 1.08;
+    margin: 0 0 18px;
+  }
+
+  .author {
+    opacity: 0.7;
+    font-size: 20px;
+    margin: 0 0 24px;
+  }
+
+  .note {
+    font-size: 18px;
+    line-height: 1.7;
+    opacity: 0.8;
+    margin-top: 20px;
+  }
+
+  .actions {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 28px;
+  }
+
+  .buy-btn,
+  .share-btn {
+    padding: 14px 20px;
+    text-decoration: none;
+    font-weight: 700;
+  }
+
+  .buy-btn {
+    background: #153f34;
+    color: #fffaf1;
+  }
+
+  .share-btn {
+    border: 1px solid #153f34;
+    color: #153f34;
+  }
+
+  .buy-btn:hover,
+  .share-btn:hover {
+    opacity: 0.86;
+  }
+</style>
