@@ -1,6 +1,7 @@
 ---
 quote: Thành công trong việc đối nhân xử thế đến từ khả năng nhìn sự việc theo
   góc nhìn của người khác.
+slug: Đắc nhân tâm
 author: Dale Carnegie
 date: 2026-05-19T07:51:59.043Z
 image: /assets/uploads/dnt.png
