@@ -20,26 +20,38 @@ const quotes = quoteFiles
       </p>
     </section>
 
-    <section class="quote-list">
-      {quotes.map((quote) => (
-        <article class="quote-card">
-          <div class="quote-image">
-            <p>“{quote.quote}”</p>
-            <span>{quote.author}</span>
-          </div>
+   <section class="quote-list">
+  {quotes.map((quote) => (
+    <article class="quote-card">
+      {quote.image && (
+        <a href={quote.affiliate || "#"} target="_blank" rel="noopener noreferrer">
+          <img src={quote.image} alt={quote.quote} class="quote-img" />
+        </a>
+      )}
 
-          <div class="quote-actions">
-            <p class="quote-author">— {quote.author}</p>
+      <div class="quote-content">
+        <p class="quote-text">“{quote.quote}”</p>
+        {quote.author && <p class="quote-author">— {quote.author}</p>}
 
-            <button
-  class="share-btn"
-  data-quote={quote.quote}
-  data-author={quote.author}
->
-  Chia sẻ quote
-</button>
-          </div>
-        </article>
+        {quote.affiliate && (
+          <a class="buy-btn" href={quote.affiliate} target="_blank" rel="noopener noreferrer">
+            Xem sách / sản phẩm
+          </a>
+        )}
+
+        <button
+          class="share-btn"
+          data-quote={quote.quote}
+          data-author={quote.author}
+          data-affiliate={quote.affiliate}
+          data-image={quote.image}
+        >
+          Chia sẻ quote
+        </button>
+      </div>
+    </article>
+  ))}
+</section>
       ))}
     </section>
   </main>
@@ -49,18 +61,20 @@ const quotes = quoteFiles
     button.addEventListener("click", async () => {
       const quote = button.dataset.quote;
       const author = button.dataset.author || "Sách Hay Mỗi Ngày";
+      const affiliate = button.dataset.affiliate || "https://sachhaymoingay.com/quote/";
+      const image = button.dataset.image;
 
-      const text = `“${quote}”\n— ${author}\n\nXem thêm tại: https://sachhaymoingay.com/quote/`;
+      const text = `“${quote}”\n— ${author}\n\n${affiliate}`;
 
       if (navigator.share) {
         await navigator.share({
-          title: "Quote hay từ Sách Hay Mỗi Ngày",
+          title: "Quote hay",
           text,
-          url: "https://sachhaymoingay.com/quote/",
+          url: affiliate,
         });
       } else {
-        await navigator.clipboard.writeText(text);
-        alert("Đã copy quote. Bạn có thể dán để chia sẻ.");
+        await navigator.clipboard.writeText(image ? `${text}\nẢnh: ${image}` : text);
+        alert("Đã copy quote + link. Bạn có thể dán để chia sẻ.");
       }
     });
   });
@@ -159,4 +173,41 @@ const quotes = quoteFiles
   .share-btn:hover {
     opacity: 0.85;
   }
+.quote-img {
+  width: 100%;
+  display: block;
+  margin-bottom: 18px;
+}
+
+.quote-content {
+  padding: 8px 0 0;
+}
+
+.quote-text {
+  font-family: Georgia, serif;
+  font-size: 26px;
+  line-height: 1.35;
+  margin: 0 0 12px;
+}
+
+.buy-btn {
+  display: inline-block;
+  margin-top: 12px;
+  background: #153f34;
+  color: #fffaf1;
+  padding: 12px 16px;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.share-btn {
+  margin-top: 12px;
+  margin-left: 8px;
+  background: transparent;
+  border: 1px solid #153f34;
+  color: #153f34;
+  padding: 12px 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
 </style>
