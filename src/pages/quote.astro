@@ -24,8 +24,8 @@ const quotes = quoteFiles
   {quotes.map((quote) => (
     <article class="quote-card">
       {quote.image && (
-        <a href={quote.affiliate || "#"} target="_blank" rel="noopener noreferrer">
-          <img src={quote.image} alt={quote.quote} class="quote-img" />
+        <a href={`/quote/${quote.slug}/`}>
+  <img src={quote.image} alt={quote.quote} class="quote-img" />
         </a>
       )}
 
