@@ -20,23 +20,18 @@ collections:
       - { label: "Ảnh bìa", name: "cover", widget: "image", required: false }
       - { label: "Mô tả SEO", name: "description", widget: "text" }
       - { label: "Nội dung", name: "body", widget: "markdown" }
-- name: "quotes"
-  label: "Quotes"
-  folder: "content/quotes"
-  create: true
-  slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
-  extension: "md"
-  format: "frontmatter"
 
-  fields:
-    - { label: "Quote", name: "quote", widget: "text" }
-
-    - { label: "Tác giả", name: "author", widget: "string", required: false }
-
-    - { label: "Ngày đăng", name: "date", widget: "datetime" }
-
-    - { label: "Ảnh quote", name: "image", widget: "image", required: false }
-
-    - { label: "Link tiếp thị", name: "affiliate", widget: "string", required: false }
-
-    - { label: "Nội dung phụ", name: "body", widget: "markdown", required: false }
+  - name: "quotes"
+    label: "Quotes"
+    folder: "content/quotes"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+    fields:
+      - { label: "Quote", name: "quote", widget: "text" }
+      - { label: "Tác giả", name: "author", widget: "string", required: false }
+      - { label: "Ngày đăng", name: "date", widget: "datetime" }
+      - { label: "Ảnh quote", name: "image", widget: "image", required: false }
+      - { label: "Link tiếp thị", name: "affiliate", widget: "string", required: false }
+      - { label: "Nội dung phụ", name: "body", widget: "markdown", required: false }
