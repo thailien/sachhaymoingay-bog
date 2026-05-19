@@ -20,7 +20,7 @@ collections:
       - { label: "Ảnh bìa", name: "cover", widget: "image", required: false }
       - { label: "Mô tả SEO", name: "description", widget: "text" }
       - { label: "Nội dung", name: "body", widget: "markdown" }
-  - name: "quotes"
+- name: "quotes"
   label: "Quotes"
   folder: "content/quotes"
   create: true
