@@ -3,24 +3,29 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
 const siteUrl = "https://sachhaymoingay.com";
 
-const toSlug = (text = "") =>
-  text
-    .toString()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/đ/g, "d")
-    .replace(/Đ/g, "D")
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-
 export async function getStaticPaths() {
+  const toSlug = (text = "") =>
+    text
+      .toString()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/đ/g, "d")
+      .replace(/Đ/g, "D")
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+
   const quoteFiles = await Astro.glob("/content/quotes/*.md");
 
   return quoteFiles.map((item) => {
     const fileSlug = item.file.split("/").pop()?.replace(".md", "") || "";
-    const slug = toSlug(item.frontmatter.slug || item.frontmatter.title || item.frontmatter.quote || fileSlug);
+    const slug = toSlug(
+      item.frontmatter.slug ||
+      item.frontmatter.title ||
+      item.frontmatter.quote ||
+      fileSlug
+    );
 
     return {
       params: { slug },
@@ -31,7 +36,6 @@ export async function getStaticPaths() {
     };
   });
 }
-
 const { quote, slug } = Astro.props;
 
 const pageUrl = `${siteUrl}/quote/${slug}/`;
