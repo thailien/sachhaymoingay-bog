@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+
 const quoteFiles = await Astro.glob("/content/quotes/*.md");
 
 const quotes = quoteFiles
@@ -10,29 +11,130 @@ const quotes = quoteFiles
 ---
 
 <BaseLayout title="Quote mỗi ngày | Sách Hay Mỗi Ngày">
-  <main class="section">
-    <div class="container">
-      <p>Quote mỗi ngày</p>
-
+  <main class="quote-page">
+    <section class="quote-hero">
+      <p class="eyebrow">QUOTE MỖI NGÀY</p>
       <h1>Những câu chữ đáng để suy ngẫm chậm hơn một chút.</h1>
+      <p class="intro">
+        Một nơi lưu lại những câu trích dẫn giúp bạn đọc sâu hơn, nghĩ rõ hơn và sống tỉnh táo hơn.
+      </p>
+    </section>
 
-      <div>
-        {quotes.map((quote) => (
-          <article style="margin-bottom: 48px;">
-            <blockquote
-              style="font-size: 2rem; line-height: 1.5; font-weight: 600;"
+    <section class="quote-list">
+      {quotes.map((quote) => (
+        <article class="quote-card">
+          <div class="quote-image">
+            <p>“{quote.quote}”</p>
+            <span>{quote.author}</span>
+          </div>
+
+          <div class="quote-actions">
+            <p class="quote-author">— {quote.author}</p>
+
+            <a
+              class="share-btn"
+              href={`https://www.facebook.com/sharer/sharer.php?u=https://sachhaymoingay.com/quote/`}
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              “{quote.quote}”
-            </blockquote>
-
-            {quote.author && (
-              <p style="opacity: 0.7; margin-top: 12px;">
-                — {quote.author}
-              </p>
-            )}
-          </article>
-        ))}
-      </div>
-    </div>
+              Chia sẻ Facebook
+            </a>
+          </div>
+        </article>
+      ))}
+    </section>
   </main>
 </BaseLayout>
+
+<style>
+  .quote-page {
+    background: #f4eadb;
+    color: #12241f;
+    padding: 120px 6vw 80px;
+  }
+
+  .quote-hero {
+    max-width: 980px;
+    margin-bottom: 64px;
+  }
+
+  .eyebrow {
+    color: #b87a2c;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .quote-hero h1 {
+    font-family: Georgia, serif;
+    font-size: clamp(48px, 8vw, 112px);
+    line-height: 0.95;
+    margin: 16px 0 24px;
+  }
+
+  .intro {
+    max-width: 680px;
+    font-size: 20px;
+    line-height: 1.7;
+    opacity: 0.75;
+  }
+
+  .quote-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 32px;
+  }
+
+  .quote-card {
+    background: #fffaf1;
+    border: 1px solid rgba(18, 36, 31, 0.12);
+    padding: 20px;
+  }
+
+  .quote-image {
+    aspect-ratio: 1 / 1;
+    background: #153f34;
+    color: #fffaf1;
+    padding: 36px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .quote-image p {
+    font-family: Georgia, serif;
+    font-size: clamp(28px, 4vw, 46px);
+    line-height: 1.18;
+    margin: 0;
+  }
+
+  .quote-image span {
+    opacity: 0.7;
+    font-size: 16px;
+  }
+
+  .quote-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 18px;
+  }
+
+  .quote-author {
+    margin: 0;
+    opacity: 0.7;
+  }
+
+  .share-btn {
+    background: #153f34;
+    color: #fffaf1;
+    padding: 12px 16px;
+    text-decoration: none;
+    font-weight: 700;
+  }
+
+  .share-btn:hover {
+    opacity: 0.85;
+  }
+</style>
