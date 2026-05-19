@@ -1,12 +1,33 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 
+const siteUrl = "https://sachhaymoingay.com";
+
+function slugify(text = "") {
+  return text
+    .toString()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "d")
+    .replace(/Đ/g, "D")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
 const quoteFiles = await Astro.glob("/content/quotes/*.md");
 
 const quotes = quoteFiles
-  .map((item) => ({
-    ...item.frontmatter,
-  }))
+  .map((item) => {
+    const fileSlug = item.file.split("/").pop()?.replace(".md", "") || "";
+    const finalSlug = slugify(item.frontmatter.slug || item.frontmatter.title || item.frontmatter.quote || fileSlug);
+
+    return {
+      ...item.frontmatter,
+      slug: finalSlug,
+    };
+  })
   .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 ---
 
@@ -15,45 +36,44 @@ const quotes = quoteFiles
     <section class="quote-hero">
       <p class="eyebrow">QUOTE MỖI NGÀY</p>
       <h1>Những câu chữ đáng để suy ngẫm chậm hơn một chút.</h1>
-      <p class="intro">
-        Một nơi lưu lại những câu trích dẫn giúp bạn đọc sâu hơn, nghĩ rõ hơn và sống tỉnh táo hơn.
-      </p>
+      <p class="intro">Một nơi lưu lại những câu trích dẫn giúp bạn đọc sâu hơn, nghĩ rõ hơn và sống tỉnh táo hơn.</p>
     </section>
 
-   <section class="quote-list">
-  {quotes.map((quote) => (
-    <article class="quote-card">
-      {quote.image && (
-        <a href={`/quote/${quote.slug}/`}>
-  <img src={quote.image} alt={quote.quote} class="quote-img" />
-        </a>
-      )}
+    <section class="quote-list">
+      {quotes.map((quote) => (
+        <article class="quote-card">
+          {quote.image && (
+            <a href={`/quote/${quote.slug}/`}>
+              <img src={quote.image} alt={quote.quote} class="quote-img" />
+            </a>
+          )}
 
-      <div class="quote-content">
-        <p class="quote-text">“{quote.quote}”</p>
-        {quote.author && <p class="quote-author">— {quote.author}</p>}
+          <div class="quote-content">
+            <h2>“{quote.quote}”</h2>
 
-        {quote.affiliate && (
-          <a class="buy-btn" href={quote.affiliate} target="_blank" rel="noopener noreferrer">
-            Xem sách / sản phẩm
-          </a>
-        )}
+            {quote.author && <p class="quote-author">— {quote.author}</p>}
 
-        <a
-  class="share-btn"
-  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://sachhaymoingay.com/quote/${quote.slug}/`)}`}
-  target="_blank"
-  rel="noopener noreferrer"
->
-  Chia sẻ Facebook
-</a>
-      </div>
-    </article>
-  ))}
-</section>
+            <div class="quote-actions">
+              {quote.affiliate && (
+                <a class="buy-btn" href={quote.affiliate} target="_blank" rel="noopener noreferrer">
+                  Xem sách / sản phẩm
+                </a>
+              )}
 
+              <a
+                class="share-btn"
+                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${siteUrl}/quote/${quote.slug}/`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Chia sẻ Facebook
+              </a>
+            </div>
+          </div>
+        </article>
+      ))}
+    </section>
   </main>
-
 </BaseLayout>
 
 <style>
@@ -64,8 +84,8 @@ const quotes = quoteFiles
   }
 
   .quote-hero {
-    max-width: 980px;
-    margin-bottom: 64px;
+    max-width: 1100px;
+    margin-bottom: 72px;
   }
 
   .eyebrow {
@@ -75,14 +95,14 @@ const quotes = quoteFiles
     text-transform: uppercase;
   }
 
-.quote-hero h1 {
-  font-family: Georgia, serif;
-  font-size: clamp(56px, 9vw, 140px);
-  line-height: 0.92;
-  letter-spacing: -0.04em;
-  max-width: 1100px;
-  margin: 16px 0 24px;
-}
+  .quote-hero h1 {
+    font-family: Georgia, serif;
+    font-size: clamp(56px, 9vw, 140px);
+    line-height: 0.92;
+    letter-spacing: -0.04em;
+    max-width: 1100px;
+    margin: 16px 0 24px;
+  }
 
   .intro {
     max-width: 680px;
@@ -100,90 +120,48 @@ const quotes = quoteFiles
   .quote-card {
     background: #fffaf1;
     border: 1px solid rgba(18, 36, 31, 0.12);
-    padding: 20px;
+    padding: 24px;
   }
 
-  .quote-image {
-    aspect-ratio: 1 / 1;
-    background: #153f34;
-    color: #fffaf1;
-    padding: 36px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+  .quote-img {
+    width: 100%;
+    display: block;
+    margin-bottom: 24px;
   }
 
-  .quote-image p {
+  .quote-content h2 {
     font-family: Georgia, serif;
-    font-size: clamp(28px, 4vw, 46px);
+    font-size: clamp(28px, 3vw, 44px);
     line-height: 1.18;
-    margin: 0;
+    margin: 0 0 16px;
   }
 
-  .quote-image span {
+  .quote-author {
     opacity: 0.7;
-    font-size: 16px;
+    font-size: 18px;
   }
 
   .quote-actions {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    margin-top: 18px;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 24px;
   }
 
-  .quote-author {
-    margin: 0;
-    opacity: 0.7;
-  }
-
+  .buy-btn,
   .share-btn {
-    background: #153f34;
-    color: #fffaf1;
-    padding: 12px 16px;
+    padding: 14px 20px;
     text-decoration: none;
     font-weight: 700;
   }
 
-  .share-btn:hover {
-    opacity: 0.85;
+  .buy-btn {
+    background: #153f34;
+    color: #fffaf1;
   }
-.quote-img {
-  width: 100%;
-  display: block;
-  margin-bottom: 18px;
-}
 
-.quote-content {
-  padding: 8px 0 0;
-}
-
-.quote-text {
-  font-family: Georgia, serif;
-  font-size: 26px;
-  line-height: 1.35;
-  margin: 0 0 12px;
-}
-
-.buy-btn {
-  display: inline-block;
-  margin-top: 12px;
-  background: #153f34;
-  color: #fffaf1;
-  padding: 12px 16px;
-  text-decoration: none;
-  font-weight: 700;
-}
-
-.share-btn {
-  margin-top: 12px;
-  margin-left: 8px;
-  background: transparent;
-  border: 1px solid #153f34;
-  color: #153f34;
-  padding: 12px 16px;
-  font-weight: 700;
-  cursor: pointer;
-}
+  .share-btn {
+    border: 1px solid #153f34;
+    color: #153f34;
+  }
 </style>
