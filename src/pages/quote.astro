@@ -1,7 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-
-const quoteFiles = await Astro.glob("../../content/quotes/*.md");
+const quoteFiles = await Astro.glob("/content/quotes/*.md");
 
 const quotes = quoteFiles
   .map((item) => ({
