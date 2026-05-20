@@ -1,12 +1,135 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const bookFiles = await Astro.glob("/content/books/*.md");
+
+const books = bookFiles
+  .map((book) => book.frontmatter)
+  .sort((a, b) => (a.title || "").localeCompare(b.title || ""));
 ---
 
 <BaseLayout title="Mua sách | Sách Hay Mỗi Ngày">
-  <main>
-    <section class="marketplace-band">
+  <main class="books-page">
+    <section class="books-hero">
       <p>TÌM MUA SÁCH CHÍNH HÃNG</p>
       <h1>Dễ dàng trải nghiệm tủ sách của cá nhân mình</h1>
     </section>
+
+    <section class="book-grid">
+      {books.map((book) => (
+        <article class="book-card">
+          <img src={book.image} alt={book.title} class="book-img" />
+
+          <div class="book-info">
+            <p class="book-category">{book.category}</p>
+            <h2>{book.title}</h2>
+            <p class="book-author">{book.author}</p>
+            <p class="book-desc">{book.description}</p>
+
+            <div class="book-links">
+              {book.shopee && (
+                <a href={book.shopee} target="_blank" rel="noopener noreferrer">Shopee</a>
+              )}
+              {book.tiktok && (
+                <a href={book.tiktok} target="_blank" rel="noopener noreferrer">TikTok</a>
+              )}
+              {book.website && (
+                <a href={book.website} target="_blank" rel="noopener noreferrer">Website</a>
+              )}
+            </div>
+          </div>
+        </article>
+      ))}
+    </section>
   </main>
 </BaseLayout>
+
+<style>
+  .books-page {
+    background: #f4eadb;
+    color: #12241f;
+    padding: 120px 6vw 80px;
+  }
+
+  .books-hero {
+    max-width: 980px;
+    margin-bottom: 60px;
+  }
+
+  .books-hero p,
+  .book-category {
+    color: #b87a2c;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-size: 13px;
+  }
+
+  .books-hero h1 {
+    font-family: Georgia, serif;
+    font-size: clamp(42px, 7vw, 96px);
+    line-height: 0.95;
+    margin: 14px 0 0;
+  }
+
+  .book-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 28px;
+  }
+
+  .book-card {
+    background: #fffaf1;
+    border: 1px solid rgba(18, 36, 31, 0.12);
+    padding: 22px;
+  }
+
+  .book-img {
+    width: 100%;
+    height: 300px;
+    object-fit: contain;
+    margin-bottom: 22px;
+  }
+
+  .book-info h2 {
+    font-family: Georgia, serif;
+    font-size: 28px;
+    line-height: 1.12;
+    margin: 8px 0;
+  }
+
+  .book-author {
+    opacity: 0.65;
+    margin-bottom: 12px;
+  }
+
+  .book-desc {
+    line-height: 1.6;
+    opacity: 0.85;
+  }
+
+  .book-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .book-links a {
+    background: #153f34;
+    color: #fffaf1;
+    text-decoration: none;
+    padding: 10px 16px;
+    font-weight: 700;
+  }
+
+  @media (max-width: 768px) {
+    .books-page {
+      padding: 96px 18px 56px;
+    }
+
+    .book-img {
+      height: 240px;
+    }
+  }
+</style>
