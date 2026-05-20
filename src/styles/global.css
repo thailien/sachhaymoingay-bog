@@ -561,6 +561,7 @@ blockquote {
   .site-footer {
     flex-direction: column;
   }
+  }
   .main-nav {
   display: flex;
 }
