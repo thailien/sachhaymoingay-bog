@@ -37,3 +37,19 @@ collections:
       - { label: "Ảnh quote", name: "image", widget: "image", required: false }
       - { label: "Link tiếp thị", name: "affiliate", widget: "string", required: false }
       - { label: "Nội dung phụ", name: "body", widget: "markdown", required: false }
+  - name: "books"
+    label: "Mua sách"
+    folder: "content/books"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+    fields:
+      - { label: "Tên sách", name: "title", widget: "string" }
+      - { label: "Tác giả", name: "author", widget: "string", required: false }
+      - { label: "Mô tả ngắn", name: "description", widget: "text", required: false }
+      - { label: "Ảnh sách", name: "image", widget: "image", required: false }
+      - { label: "Danh mục", name: "category", widget: "string", required: false }
+      - { label: "Link Shopee", name: "shopee", widget: "string", required: false }
+      - { label: "Link TikTok", name: "tiktok", widget: "string", required: false }
+      - { label: "Link Website", name: "website", widget: "string", required: false }
